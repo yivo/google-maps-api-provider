@@ -34,17 +34,29 @@
         }
       },
       load: function(callback) {
-        var head, script;
+        var el, head, i, key, len, query, ref, script;
         if (this.loaded) {
           callback();
         } else {
           this.queue.push(callback);
           if (!this.loading) {
-            __root__[this.callback.name] = this.callback.fn;
             if ((head = document.getElementsByTagName('head')[0]) != null) {
+              ref = head.getElementsByTagName('meta');
+              for (i = 0, len = ref.length; i < len; i++) {
+                el = ref[i];
+                if (el.getAttribute('name') === 'google_api:browser_key') {
+                  key = el.getAttribute('content');
+                  break;
+                }
+              }
+              __root__[this.callback.name] = this.callback.fn;
+              query = "v=3&callback=" + this.callback.name;
+              if (key) {
+                query += "&key=" + key;
+              }
               script = document.createElement('script');
               script.type = 'text/javascript';
-              script.src = "http://maps.googleapis.com/maps/api/js?v=3&callback=" + this.callback.name;
+              script.src = "https://maps.googleapis.com/maps/api/js?" + query;
               head.appendChild(script);
               this.loading = true;
             }

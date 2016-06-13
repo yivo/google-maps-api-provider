@@ -25,11 +25,25 @@ GoogleMapsAPI =
       @queue.push(callback)
 
       unless @loading
-        __root__[@callback.name] = @callback.fn
         if (head = document.getElementsByTagName('head')[0])?
+          for el in head.getElementsByTagName('meta')
+            if el.getAttribute('name') is 'google_api:browser_key'
+              key = el.getAttribute('content')
+              break
+
+          # Prepare API load callback
+          __root__[@callback.name] = @callback.fn
+
+          # Prepare API params
+          query       = "v=3&callback=#{@callback.name}"
+          query      += "&key=#{key}" if key
+
+          # Prepare script tag
           script      = document.createElement('script')
           script.type = 'text/javascript'
-          script.src  = "http://maps.googleapis.com/maps/api/js?v=3&callback=#{@callback.name}"
+          script.src  = "https://maps.googleapis.com/maps/api/js?#{query}"
+
+          # Start API load
           head.appendChild(script)
           @loading = yes
     return
