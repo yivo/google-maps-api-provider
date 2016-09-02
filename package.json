@@ -1,6 +1,6 @@
 {
   "name": "google-maps-api-provider",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "No more headache with loading Google Maps API",
   "main": "build/provider.js",
   "author": "Yaroslav Konoplov <yaroslav@inbox.com>",
@@ -16,7 +16,7 @@
     "gulp-lazyload": "yivo/gulp-lazyload",
     "gulp-plumber": "^1.0.0",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.0",
+    "gulp-uglify": "^2.0.0",
     "gulp-preprocess": "^1.2.0"
   }
 }

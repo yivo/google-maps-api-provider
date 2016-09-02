@@ -29,7 +29,7 @@ gulp.task 'build', ->
 
 gulp.task 'build-min', ['build'], ->
   gulp.src('build/provider.js')
-  .pipe uglify()
+  .pipe uglify(output: {width: 80, max_line_len: 80})
   .pipe rename('provider.min.js')
   .pipe gulp.dest('build')
 

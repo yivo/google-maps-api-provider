@@ -63,13 +63,14 @@
             __root__[@callback.name] = @callback.fn
   
             # Prepare API params
-            query       = "v=3&callback=#{@callback.name}"
-            query      += "&key=#{key}" if key
+            query  = "v=3&callback=#{@callback.name}"
+            query += "&key=#{key}" if key
   
             # Prepare script tag
-            script      = document.createElement('script')
-            script.type = 'text/javascript'
-            script.src  = "https://maps.googleapis.com/maps/api/js?#{query}"
+            script             = document.createElement('script')
+            script.type        = 'text/javascript'
+            script.src         = "https://maps.googleapis.com/maps/api/js?#{query}"
+            script.crossOrigin = 'anonymous'
   
             # Start API load
             head.appendChild(script)
