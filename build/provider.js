@@ -57,7 +57,9 @@
               script = document.createElement('script');
               script.type = 'text/javascript';
               script.src = "https://maps.googleapis.com/maps/api/js?" + query;
-              script.crossOrigin = '';
+              if (script.crossOrigin != null) {
+                script.crossOrigin = void 0;
+              }
               head.appendChild(script);
               this.loading = true;
             }

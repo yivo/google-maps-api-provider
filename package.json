@@ -1,6 +1,6 @@
 {
   "name": "google-maps-api-provider",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "No more headache with loading Google Maps API",
   "main": "build/provider.js",
   "author": "Yaroslav Konoplov <yaroslav@inbox.com>",
