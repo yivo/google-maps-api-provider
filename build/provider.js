@@ -13,7 +13,8 @@
       root.GoogleMapsAPI = factory(root, document);
     }
   })(function(__root__, document) {
-    var GoogleMapsAPI;
+    var GoogleMapsAPI, encodeURIComponent;
+    encodeURIComponent = __root__.encodeURIComponent;
     GoogleMapsAPI = {
       VERSION: '1.0.6',
       loaded: false,
@@ -36,7 +37,7 @@
         }
       },
       load: function(callback) {
-        var el, head, i, key, len, query, ref, script;
+        var el, head, i, key, len, query, ref, script, ver;
         if (this.loaded) {
           if (typeof callback === "function") {
             callback();
@@ -50,19 +51,25 @@
               ref = head.getElementsByTagName('meta');
               for (i = 0, len = ref.length; i < len; i++) {
                 el = ref[i];
-                if (el.getAttribute('name') === 'google_api:browser_key') {
-                  key = el.getAttribute('content');
-                  break;
+                switch (el.getAttribute('name')) {
+                  case 'google_api:browser_key':
+                    key = el.getAttribute('content');
+                    break;
+                  case 'google_maps_api:version':
+                    ver = el.getAttribute('content');
                 }
               }
               __root__[this.callback.name] = this.callback.func;
-              query = "v=3&callback=" + this.callback.name;
+              query = "v=" + (encodeURIComponent(ver || '3'));
+              query += "&callback=" + (encodeURIComponent(this.callback.name));
               if (key) {
-                query += "&key=" + key;
+                query += "&key=" + (encodeURIComponent(key));
               }
               script = document.createElement('script');
               script.type = 'text/javascript';
               script.src = "https://maps.googleapis.com/maps/api/js?" + query;
+              script.defer = true;
+              script.async = true;
               head.appendChild(script);
               this.loading = true;
             }
