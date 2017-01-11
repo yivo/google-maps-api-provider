@@ -10,47 +10,48 @@
 
   # AMD
   if typeof define is 'function' and typeof define.amd is 'object' and define.amd isnt null
-    root.GoogleMapsAPI = factory(root, document, Date)
+    root.GoogleMapsAPI = factory(root, document)
     define -> root.GoogleMapsAPI
 
   # CommonJS
   else if typeof module is 'object' and module isnt null and
           typeof module.exports is 'object' and module.exports isnt null
-    module.exports = factory(root, document, Date)
+    module.exports = factory(root, document)
 
   # Browser and the rest
   else
-    root.GoogleMapsAPI = factory(root, document, Date)
+    root.GoogleMapsAPI = factory(root, document)
 
   # No return value
   return
 
-)((__root__, document, Date) ->
+)((__root__, document) ->
   GoogleMapsAPI =
   
-    loaded:  no
-    loading: no
+    VERSION: '1.0.6'
+    
+    loaded:  false
+    loading: false
     queue:   []
   
     dispatch: ->
       fn() while (fn = @queue.shift())?
-      return
-  
+      this
+      
     callback:
-      name: "__#{Date.now?() or +new Date()}GoogleMapsCallback"
-      fn: ->
-        delete window[GoogleMapsAPI.callback.name]
-        GoogleMapsAPI.loaded  = yes
-        GoogleMapsAPI.loading = no
+      name: 'googleMapsAPICallback'
+      func: ->
+        delete __root__[GoogleMapsAPI.callback.name]
+        GoogleMapsAPI.loaded  = true
+        GoogleMapsAPI.loading = false
         GoogleMapsAPI.dispatch()
-        return
   
     load: (callback) ->
       if @loaded
-        callback()
+        callback?()
   
       else
-        @queue.push(callback)
+        @queue.push(callback) if callback?
   
         unless @loading
           if (head = document.getElementsByTagName('head')[0])?
@@ -60,48 +61,21 @@
                 break
   
             # Prepare API load callback
-            __root__[@callback.name] = @callback.fn
+            __root__[@callback.name] = @callback.func
   
             # Prepare API params
             query  = "v=3&callback=#{@callback.name}"
             query += "&key=#{key}" if key
   
             # Prepare script tag
-            script             = document.createElement('script')
-            script.type        = 'text/javascript'
-            script.src         = "https://maps.googleapis.com/maps/api/js?#{query}"
-            script.crossOrigin = undefined if script.crossOrigin?
+            script      = document.createElement('script')
+            script.type = 'text/javascript'
+            script.src  = "https://maps.googleapis.com/maps/api/js?#{query}"
   
             # Start API load
             head.appendChild(script)
-            @loading = yes
-      return
-  
-  if $?
-    do ->
-      $find = -> $('.js-google-simplemap')
-  
-      initialize = ->
-        $maps = $find()
-        if $maps[0]?
-          GoogleMapsAPI.load ->
-            $maps = $find()
-            return unless $maps[0]?
-            $maps.each ->
-              $map   = $(this)
-              center = new google.maps.LatLng($map.data('lat'), $map.data('lng'))
-              zoom   = $map.data('zoom') or 17
-              map    = new google.maps.Map(this, {center, zoom, scrollwheel: no, draggable: !isMobile?.any})
-              marker = new google.maps.Marker {position: center, map, animation: google.maps.Animation.BOUNCE}
-        return
-  
-      if Turbolinks?
-        if Turbolinks.supported
-          $(document).on('page:change', initialize)
-        else
-          $(initialize)
-      else
-        $(document).on('ready pjax:end', initialize)
+            @loading = true
+      this
   
   GoogleMapsAPI
 )

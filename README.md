@@ -1,0 +1,6 @@
+[![Build Status](https://img.shields.io/travis/yivo/google-maps-api-provider/master.svg)](https://travis-ci.org/yivo/google-maps-api-provider)
+[![Bower](https://img.shields.io/bower/v/google-maps-api-provider.svg)]()
+[![npm](https://img.shields.io/npm/v/google-maps-api-provider.svg)](https://www.npmjs.com/package/google-maps-api-provider)
+[![Dependency Status](https://img.shields.io/david/yivo/google-maps-api-provider.svg)](https://david-dm.org/yivo/google-maps-api-provider)
+[![devDependencies Status](https://img.shields.io/david/dev/yivo/google-maps-api-provider.svg)](https://david-dm.org/yivo/google-maps-api-provider?type=dev)
+[![Reference Status](https://www.versioneye.com/coffeescript/yivo:google-maps-api-provider/reference_badge.svg?style=flat-square)](https://www.versioneye.com/coffeescript/yivo:google-maps-api-provider/references)

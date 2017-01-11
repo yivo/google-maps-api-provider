@@ -1,28 +1,29 @@
 GoogleMapsAPI =
 
-  loaded:  no
-  loading: no
+  VERSION: '1.0.6'
+  
+  loaded:  false
+  loading: false
   queue:   []
 
   dispatch: ->
     fn() while (fn = @queue.shift())?
-    return
-
+    this
+    
   callback:
-    name: "__#{Date.now?() or +new Date()}GoogleMapsCallback"
-    fn: ->
-      delete window[GoogleMapsAPI.callback.name]
-      GoogleMapsAPI.loaded  = yes
-      GoogleMapsAPI.loading = no
+    name: 'googleMapsAPICallback'
+    func: ->
+      delete __root__[GoogleMapsAPI.callback.name]
+      GoogleMapsAPI.loaded  = true
+      GoogleMapsAPI.loading = false
       GoogleMapsAPI.dispatch()
-      return
 
   load: (callback) ->
     if @loaded
-      callback()
+      callback?()
 
     else
-      @queue.push(callback)
+      @queue.push(callback) if callback?
 
       unless @loading
         if (head = document.getElementsByTagName('head')[0])?
@@ -32,23 +33,20 @@ GoogleMapsAPI =
               break
 
           # Prepare API load callback
-          __root__[@callback.name] = @callback.fn
+          __root__[@callback.name] = @callback.func
 
           # Prepare API params
           query  = "v=3&callback=#{@callback.name}"
           query += "&key=#{key}" if key
 
           # Prepare script tag
-          script             = document.createElement('script')
-          script.type        = 'text/javascript'
-          script.src         = "https://maps.googleapis.com/maps/api/js?#{query}"
-          script.crossOrigin = undefined if script.crossOrigin?
+          script      = document.createElement('script')
+          script.type = 'text/javascript'
+          script.src  = "https://maps.googleapis.com/maps/api/js?#{query}"
 
           # Start API load
           head.appendChild(script)
-          @loading = yes
-    return
-
-# @include simplemaps.coffee
+          @loading = true
+    this
 
 GoogleMapsAPI

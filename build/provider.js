@@ -3,18 +3,19 @@
     var root;
     root = typeof self === 'object' && self !== null && self.self === self ? self : typeof global === 'object' && global !== null && global.global === global ? global : void 0;
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd !== null) {
-      root.GoogleMapsAPI = factory(root, document, Date);
+      root.GoogleMapsAPI = factory(root, document);
       define(function() {
         return root.GoogleMapsAPI;
       });
     } else if (typeof module === 'object' && module !== null && typeof module.exports === 'object' && module.exports !== null) {
-      module.exports = factory(root, document, Date);
+      module.exports = factory(root, document);
     } else {
-      root.GoogleMapsAPI = factory(root, document, Date);
+      root.GoogleMapsAPI = factory(root, document);
     }
-  })(function(__root__, document, Date) {
+  })(function(__root__, document) {
     var GoogleMapsAPI;
     GoogleMapsAPI = {
+      VERSION: '1.0.6',
       loaded: false,
       loading: false,
       queue: [],
@@ -23,22 +24,27 @@
         while ((fn = this.queue.shift()) != null) {
           fn();
         }
+        return this;
       },
       callback: {
-        name: "__" + ((typeof Date.now === "function" ? Date.now() : void 0) || +new Date()) + "GoogleMapsCallback",
-        fn: function() {
-          delete window[GoogleMapsAPI.callback.name];
+        name: 'googleMapsAPICallback',
+        func: function() {
+          delete __root__[GoogleMapsAPI.callback.name];
           GoogleMapsAPI.loaded = true;
           GoogleMapsAPI.loading = false;
-          GoogleMapsAPI.dispatch();
+          return GoogleMapsAPI.dispatch();
         }
       },
       load: function(callback) {
         var el, head, i, key, len, query, ref, script;
         if (this.loaded) {
-          callback();
+          if (typeof callback === "function") {
+            callback();
+          }
         } else {
-          this.queue.push(callback);
+          if (callback != null) {
+            this.queue.push(callback);
+          }
           if (!this.loading) {
             if ((head = document.getElementsByTagName('head')[0]) != null) {
               ref = head.getElementsByTagName('meta');
@@ -49,7 +55,7 @@
                   break;
                 }
               }
-              __root__[this.callback.name] = this.callback.fn;
+              __root__[this.callback.name] = this.callback.func;
               query = "v=3&callback=" + this.callback.name;
               if (key) {
                 query += "&key=" + key;
@@ -57,62 +63,14 @@
               script = document.createElement('script');
               script.type = 'text/javascript';
               script.src = "https://maps.googleapis.com/maps/api/js?" + query;
-              if (script.crossOrigin != null) {
-                script.crossOrigin = void 0;
-              }
               head.appendChild(script);
               this.loading = true;
             }
           }
         }
+        return this;
       }
     };
-    if (typeof $ !== "undefined" && $ !== null) {
-      (function() {
-        var $find, initialize;
-        $find = function() {
-          return $('.js-google-simplemap');
-        };
-        initialize = function() {
-          var $maps;
-          $maps = $find();
-          if ($maps[0] != null) {
-            GoogleMapsAPI.load(function() {
-              $maps = $find();
-              if ($maps[0] == null) {
-                return;
-              }
-              return $maps.each(function() {
-                var $map, center, map, marker, zoom;
-                $map = $(this);
-                center = new google.maps.LatLng($map.data('lat'), $map.data('lng'));
-                zoom = $map.data('zoom') || 17;
-                map = new google.maps.Map(this, {
-                  center: center,
-                  zoom: zoom,
-                  scrollwheel: false,
-                  draggable: !(typeof isMobile !== "undefined" && isMobile !== null ? isMobile.any : void 0)
-                });
-                return marker = new google.maps.Marker({
-                  position: center,
-                  map: map,
-                  animation: google.maps.Animation.BOUNCE
-                });
-              });
-            });
-          }
-        };
-        if (typeof Turbolinks !== "undefined" && Turbolinks !== null) {
-          if (Turbolinks.supported) {
-            return $(document).on('page:change', initialize);
-          } else {
-            return $(initialize);
-          }
-        } else {
-          return $(document).on('ready pjax:end', initialize);
-        }
-      })();
-    }
     return GoogleMapsAPI;
   });
 

@@ -1,20 +1,24 @@
 {
   "name": "google-maps-api-provider",
-  "homepage": "https://github.com/yivo/google-maps-api-provider",
-  "authors": [
-    "Yaroslav Konoplov <yaroslav@inbox.com>"
-  ],
   "description": "No more headache with loading Google Maps API",
   "main": "build/provider.js",
+  "authors": [
+    "Yaroslav Konoplov <eahome00@gmail.com>"
+  ],
   "license": "MIT",
+  "keywords": [
+    "google",
+    "maps",
+    "api",
+    "load",
+    "provide"
+  ],
+  "homepage": "https://github.com/yivo/google-maps-api-provider",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
-    "tests",
-    "coffeespec",
-    "source",
-    "spec"
+    "tests"
   ]
 }
