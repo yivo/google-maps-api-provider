@@ -1,22 +1,26 @@
+
+/*!
+ * google-maps-api-provider 1.0.7 | https://github.com/yivo/google-maps-api-provider | MIT License
+ */
+
 (function() {
   (function(factory) {
-    var root;
-    root = typeof self === 'object' && self !== null && self.self === self ? self : typeof global === 'object' && global !== null && global.global === global ? global : void 0;
+    var __root__;
+    __root__ = typeof self === 'object' && self !== null && self.self === self ? self : typeof global === 'object' && global !== null && global.global === global ? global : Function('return this')();
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd !== null) {
-      root.GoogleMapsAPI = factory(root, document);
+      __root__.GoogleMapsAPI = factory(__root__, document, encodeURIComponent);
       define(function() {
-        return root.GoogleMapsAPI;
+        return __root__.GoogleMapsAPI;
       });
     } else if (typeof module === 'object' && module !== null && typeof module.exports === 'object' && module.exports !== null) {
-      module.exports = factory(root, document);
+      module.exports = factory(__root__, document, encodeURIComponent);
     } else {
-      root.GoogleMapsAPI = factory(root, document);
+      __root__.GoogleMapsAPI = factory(__root__, document, encodeURIComponent);
     }
-  })(function(__root__, document) {
-    var GoogleMapsAPI, encodeURIComponent;
-    encodeURIComponent = __root__.encodeURIComponent;
+  })(function(__root__, document, encodeURIComponent) {
+    var GoogleMapsAPI;
     GoogleMapsAPI = {
-      VERSION: '1.0.6',
+      VERSION: '1.0.7',
       loaded: false,
       loading: false,
       queue: [],

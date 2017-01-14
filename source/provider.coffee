@@ -1,8 +1,6 @@
-{encodeURIComponent} = __root__
-
 GoogleMapsAPI =
 
-  VERSION: '1.0.6'
+  VERSION: '1.0.7'
   
   loaded:  false
   loading: false

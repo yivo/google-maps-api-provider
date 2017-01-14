@@ -1,6 +1,6 @@
 {
   "name": "google-maps-api-provider",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "No more headache with loading Google Maps API",
   "main": "build/provider.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "gulp": "^3.9.1",
     "gulp-coffee": "^2.3.3",
     "gulp-concat": "^2.6.1",
-    "gulp-iife-wrap": "^1.0.5",
+    "gulp-umd-wrap": "^1.0.7",
     "gulp-plumber": "^1.1.0",
     "coffee-script": "^1.12.2",
     "gulp-preprocess": "^2.0.0"
